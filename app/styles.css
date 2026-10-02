@@ -1,0 +1,362 @@
+/* Project Pulse — calm, high-signal workspace styling */
+:root {
+  color-scheme: light;
+  --ink: #172033;
+  --muted: #5e6b82;
+  --soft: #8792a6;
+  --line: #dbe2ec;
+  --surface: #ffffff;
+  --canvas: #f5f7fb;
+  --navy: #172d55;
+  --blue: #2457a6;
+  --blue-soft: #eaf1ff;
+  --green: #176b4c;
+  --green-soft: #e8f6ef;
+  --amber: #86560b;
+  --amber-soft: #fff5d9;
+  --red: #a33d3d;
+  --red-soft: #fff0ef;
+  --shadow-sm: 0 2px 6px rgb(24 41 74 / 6%), 0 1px 2px rgb(24 41 74 / 4%);
+  --shadow-lg: 0 16px 38px rgb(24 41 74 / 10%), 0 3px 8px rgb(24 41 74 / 5%);
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--canvas);
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 86% -10%, #e9f1ff 0, transparent 33rem),
+    var(--canvas);
+  font-size: 1rem;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+/* The shell gives the title and its supporting copy a strong first-view anchor. */
+.dashboard {
+  width: min(100% - 2rem, 1180px);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 7vw, 5.75rem) 0 4rem;
+}
+
+.dashboard > header,
+.dashboard-header {
+  max-width: 720px;
+  margin-bottom: clamp(2rem, 5vw, 3.25rem);
+}
+
+.dashboard h1 {
+  margin: 0;
+  color: var(--navy);
+  font-size: clamp(2.15rem, 5vw, 3.7rem);
+  font-weight: 780;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.dashboard > header p,
+.dashboard-header p {
+  max-width: 60ch;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+}
+
+.projects-grid,
+.project-list,
+.dashboard > .projects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Required integration hook: cards remain readable even with unusually long values. */
+.project-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 1.25rem;
+  overflow: hidden;
+  padding: clamp(1.25rem, 2.3vw, 1.65rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.project-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  content: "";
+  background: var(--blue);
+}
+
+.project-card:hover {
+  border-color: #b9c9e1;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.project-card > header,
+.project-card-header {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-card h2,
+.project-card h3,
+.project-name {
+  min-width: 0;
+  margin: 0;
+  color: var(--navy);
+  font-size: 1.18rem;
+  font-weight: 730;
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.project-card p {
+  overflow-wrap: anywhere;
+}
+
+.project-summary,
+.summary {
+  margin: -0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.62;
+}
+
+.project-owner,
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.project-owner::before,
+.owner::before {
+  display: grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex: 0 0 1.65rem;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--blue);
+  background: var(--blue-soft);
+  content: "•";
+  font-weight: 800;
+}
+
+.project-meta,
+.card-meta,
+.project-card dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: auto 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid #e9edf3;
+}
+
+.project-card dl > div,
+.project-meta > div,
+.card-meta > div {
+  min-width: 0;
+}
+
+.project-card dt,
+.meta-label,
+.field-label {
+  margin-bottom: 0.3rem;
+  color: var(--soft);
+  font-size: 0.69rem;
+  font-weight: 780;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.project-card dd,
+.meta-value {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 620;
+  overflow-wrap: anywhere;
+}
+
+.status,
+.priority,
+[data-status],
+[data-priority] {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.42rem;
+  padding: 0.34rem 0.68rem;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  font-size: 0.74rem;
+  font-weight: 750;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+/* Shape + marker + text keep meaning intact when color is unavailable. */
+.status::before,
+[data-status]::before {
+  width: 0.46rem;
+  height: 0.46rem;
+  flex: 0 0 0.46rem;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.priority::before,
+[data-priority]::before {
+  content: "!";
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.status,
+[data-status] {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.status[data-status="complete"],
+.status[data-status="completed"],
+[data-status="complete"],
+[data-status="completed"] {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.status[data-status="blocked"],
+.status[data-status="at-risk"],
+[data-status="blocked"],
+[data-status="at-risk"] {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+.priority,
+[data-priority] {
+  color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.priority[data-priority="low"],
+[data-priority="low"] {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.recent-activity,
+.activity {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.recent-activity strong,
+.activity strong {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.empty-state,
+.error-state {
+  padding: 2rem;
+  border: 1px dashed #b9c6d8;
+  border-radius: var(--radius-card);
+  color: var(--muted);
+  background: rgb(255 255 255 / 70%);
+  text-align: center;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 3px solid #77a7f5;
+  outline-offset: 4px;
+}
+
+@media (max-width: 900px) {
+  .projects-grid,
+  .project-list,
+  .dashboard > .projects {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard {
+    width: min(100% - 1.25rem, 560px);
+    padding-top: 2.25rem;
+  }
+
+  .dashboard > header,
+  .dashboard-header {
+    margin-bottom: 1.75rem;
+  }
+
+  .projects-grid,
+  .project-list,
+  .dashboard > .projects {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

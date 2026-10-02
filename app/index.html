@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A quick view of Mona's contributor projects and priorities.">
+    <title>Project Pulse</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="dashboard" aria-labelledby="page-title">
+      <header class="dashboard-header">
+        <p class="eyebrow">Mona contributors</p>
+        <h1 id="page-title">Project Pulse</h1>
+        <p>See what the team is moving forward, who owns it, and where attention is needed.</p>
+      </header>
+
+      <section aria-labelledby="projects-heading">
+        <div class="section-heading">
+          <h2 id="projects-heading">Current projects</h2>
+          <p id="project-count" aria-live="polite"></p>
+        </div>
+
+        <div id="dashboard-status" role="status" aria-live="polite" class="dashboard-status">
+          Loading projects…
+        </div>
+        <div id="project-list" class="project-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var dataUrl = "project-data.json";
+        var statusElement = document.getElementById("dashboard-status");
+        var projectList = document.getElementById("project-list");
+        var projectCount = document.getElementById("project-count");
+        var requiredFields = [
+          "name",
+          "owner",
+          "status",
+          "recentActivity",
+          "priority",
+          "summary"
+        ];
+
+        function showState(message, stateClass) {
+          statusElement.textContent = message;
+          statusElement.className = "dashboard-status " + stateClass;
+        }
+
+        function createLabeledValue(label, value, className) {
+          var item = document.createElement("div");
+          item.className = className || "project-detail";
+
+          var labelElement = document.createElement("dt");
+          labelElement.textContent = label;
+          item.appendChild(labelElement);
+
+          var valueElement = document.createElement("dd");
+          valueElement.textContent = value;
+          item.appendChild(valueElement);
+          return item;
+        }
+
+        function normalizeBadgeValue(value) {
+          var normalizedValue = value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
+          return normalizedValue.replace(/^-+|-+$/g, "") || "unknown";
+        }
+
+        function createProjectCard(project) {
+          var card = document.createElement("article");
+          card.className = "project-card";
+
+          var heading = document.createElement("h3");
+          heading.textContent = project.name;
+          card.appendChild(heading);
+
+          var summary = document.createElement("p");
+          summary.className = "project-summary";
+          summary.textContent = project.summary;
+          card.appendChild(summary);
+
+          var details = document.createElement("dl");
+          details.className = "project-details";
+          details.appendChild(createLabeledValue("Owner", project.owner));
+          var statusDetails = createLabeledValue("Status", project.status, "project-detail project-status");
+          var statusValue = statusDetails.querySelector("dd");
+          statusValue.className = "project-status status";
+          statusValue.setAttribute("data-status", normalizeBadgeValue(project.status));
+          details.appendChild(statusDetails);
+          details.appendChild(createLabeledValue("Recent activity", project.recentActivity));
+          var priorityDetails = createLabeledValue("Priority", project.priority, "project-detail project-priority");
+          var priorityValue = priorityDetails.querySelector("dd");
+          priorityValue.className = "project-priority priority";
+          priorityValue.setAttribute("data-priority", normalizeBadgeValue(project.priority));
+          details.appendChild(priorityDetails);
+          card.appendChild(details);
+          return card;
+        }
+
+        function isValidProject(project) {
+          return project !== null &&
+            typeof project === "object" &&
+            requiredFields.every(function (field) {
+              return typeof project[field] === "string" && project[field].trim().length > 0;
+            });
+        }
+
+        function renderProjects(data) {
+          if (!data || !Array.isArray(data.projects)) {
+            showState("Project data is malformed: the projects list is unavailable.", "is-error");
+            return;
+          }
+
+          if (data.projects.length === 0) {
+            showState("There are no projects to display yet.", "is-empty");
+            projectCount.textContent = "0 projects";
+            return;
+          }
+
+          if (!data.projects.every(isValidProject)) {
+            showState("Project data is malformed: one or more projects are missing required details.", "is-error");
+            return;
+          }
+
+          data.projects.forEach(function (project) {
+            projectList.appendChild(createProjectCard(project));
+          });
+          projectCount.textContent = data.projects.length + (data.projects.length === 1 ? " project" : " projects");
+          showState("Projects loaded.", "is-ready");
+        }
+
+        fetch(dataUrl)
+          .then(function (response) {
+            if (!response.ok) {
+              throw new Error("The project data request failed.");
+            }
+            return response.json();
+          })
+          .then(renderProjects)
+          .catch(function (error) {
+            if (error && error.name === "SyntaxError") {
+              showState("Project data is malformed: the JSON could not be read.", "is-error");
+              return;
+            }
+            showState("We could not load project data. Please try again later.", "is-error");
+          });
+      }());
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "name": "Contributor Onboarding",
+      "owner": "Mona Patel",
+      "status": "On track",
+      "recentActivity": "Updated the first-week checklist and welcome guide.",
+      "priority": "High",
+      "summary": "Make it easier for new contributors to find context, tools, and their first meaningful task."
+    },
+    {
+      "name": "Release Readiness",
+      "owner": "Jordan Lee",
+      "status": "At risk",
+      "recentActivity": "Opened two follow-up issues from the staging review.",
+      "priority": "Critical",
+      "summary": "Coordinate final quality checks and communication for the next product release."
+    },
+    {
+      "name": "Design System Refresh",
+      "owner": "Avery Chen",
+      "status": "In progress",
+      "recentActivity": "Published the updated button and form component proposals.",
+      "priority": "Medium",
+      "summary": "Align shared interface patterns so product teams can move quickly with confidence."
+    },
+    {
+      "name": "Documentation Hub",
+      "owner": "Riley Thompson",
+      "status": "Planning",
+      "recentActivity": "Grouped the top support questions into three documentation tracks.",
+      "priority": "Low",
+      "summary": "Create a searchable home for the decisions, practices, and guides the team relies on."
+    }
+  ]
+}
